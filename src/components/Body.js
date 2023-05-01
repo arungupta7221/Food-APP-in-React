@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import RestaurantCard from './RestaurantCard'
 import Shimmer from './Shimmer'
 import { Link } from 'react-router-dom'
+import useOnline from '../utils/useOnline'
 
 function filteredSearchData(search, restaurants) {
   const filterData = restaurants.filter((restaurant) =>
@@ -16,6 +17,8 @@ const Body = () => {
   const [allRestaurants, setAllRestaurants] = useState([])
   const [filteredRestaurants, setFilteredRestaurants] = useState([])
   const [errorMessage, setErrorMessage] = useState('')
+
+  const isOnline = useOnline()
 
   const fetchRestaurantsFromApi = async () => {
     try {
@@ -49,6 +52,7 @@ const Body = () => {
   }
   // if allRestaurants is empty don't render restaurants cards
   if (!allRestaurants) return null
+  if (!isOnline) return <h2>🔴Please start your internet Connection</h2>
   return (
     <>
       <div className="search-container">
@@ -76,7 +80,7 @@ const Body = () => {
         <div className="restaurant-list">
           {filteredRestaurants?.map((restaurant) => {
             return (
-              <Link to={`/restaurant/:${restaurant.data.id}`} key={restaurant.data.id}>
+              <Link to={'/restaurant/' + restaurant.data.id} key={restaurant.data.id}>
                 <RestaurantCard restaurant={restaurant} />
               </Link>
             )

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import '../index.css'
 import logo from '../images/Food Fire Logo.png'
 import { Link } from 'react-router-dom'
-
+import { useSelector } from 'react-redux'
 const Header = () => {
   const [login, setLogin] = useState(false)
   const toggleClick = () => {
@@ -12,6 +12,7 @@ const Header = () => {
       setLogin(false)
     }
   }
+  const cartItems = useSelector((store) => store.cart.items)
   return (
     <div className="header">
       <div className="logo">
@@ -22,7 +23,7 @@ const Header = () => {
           <Link to="/">Home</Link>
           <Link to="/about">About</Link>
           <Link to="/contact">Contact</Link>
-          <li>Cart</li>
+          <Link to="/cart">Cart - {cartItems.length}</Link>
           <button onClick={() => toggleClick}>Login</button>
         </ul>
       </div>
